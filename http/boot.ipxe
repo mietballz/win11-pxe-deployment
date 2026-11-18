@@ -1,0 +1,25 @@
+#!ipxe
+# ---------------------------------------------------------------
+# boot.ipxe – lädt WinPE per wimboot über HTTP
+# Ziel: /var/www/html/boot/boot.ipxe
+#
+# ACHTUNG Index: Ohne Angabe bootet wimboot Index 1 der boot.wim.
+# Treiber und startnet.cmd müssen in GENAU dem Index liegen, der
+# gebootet wird (oder in beiden identisch gepflegt werden).
+# ---------------------------------------------------------------
+
+# Im ProxyDHCP-Betrieb ist ${next-server} nicht zuverlässig gesetzt – Adresse fest eintragen
+set http-path http://<PXE_SERVER_IP>/boot
+
+echo Lade Windows PE von ${http-path} ...
+
+kernel ${http-path}/wimboot gui
+initrd ${http-path}/bcd      BCD
+initrd ${http-path}/boot.sdi boot.sdi
+initrd ${http-path}/boot.wim boot.wim
+
+boot || goto failed
+
+:failed
+echo Boot fehlgeschlagen – Netzwerk und HTTP-Pfad pruefen.
+shell

@@ -1,0 +1,8 @@
+# Niemals committen: Images, Treiber, echte Antwortdateien mit Kennwörtern
+*.wim
+*.iso
+*.efi
+drivers/
+*.bak*
+*.log
+.DS_Store
